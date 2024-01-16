@@ -10,10 +10,7 @@ from sklearn.ensemble import (
 from sklearn.svm import SVC
 from xgboost import XGBClassifier
 from catboost import CatBoostClassifier
-
-
-# import h2o
-# from h2o.automl import H2OAutoML
+from lightgbm import LGBMClassifier
 
 
 class Model:
@@ -60,10 +57,14 @@ class Model:
     @property
     def mlp_classifier(self) -> MLPClassifier:
         hidden_layer_sizes = (50, 50)
-        # max_iter = 1000
         return MLPClassifier(
             hidden_layer_sizes=hidden_layer_sizes, max_iter=1000, random_state=42
         )
+
+    # NOTE: conda install lightgbm으로 설치 하여 사용 하거나, 주석 처리하여 제외 시킬 것
+    @property
+    def lightgbm(self):
+        return LGBMClassifier(n_estimators=400)
 
     @staticmethod
     def get_model_list():
@@ -81,3 +82,4 @@ if __name__ == "__main__":
     model = Model()
     model_instance = getattr(model, "catboost")
     test = model.get_model_instances()
+    # print(test)
