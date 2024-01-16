@@ -66,14 +66,18 @@ class Model:
         )
 
     @staticmethod
-    def get_all_models():
+    def get_model_list():
         return [
             instance
             for instance, prop in Model.__dict__.items()
             if isinstance(prop, property)
         ]
 
+    def get_model_instances(self):
+        return [getattr(self, _model) for _model in self.get_model_list()]
+
 
 if __name__ == "__main__":
     model = Model()
-    print(model.get_all_models())
+    model_instance = getattr(model, "catboost")
+    test = model.get_model_instances()
