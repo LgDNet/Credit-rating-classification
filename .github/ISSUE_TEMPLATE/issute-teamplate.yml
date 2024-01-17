@@ -1,21 +1,16 @@
-name: Features and Idea report
-description: new feature and data engineering idea
-title: ""
-labels: 
-projects: 
-assignees:
-  - 
+name: 💡 Features and Idea request
+description: Create a new ticket for a new feature request
+title: "💡 [REQUEST] - <title>"
+labels: [
+  "Idea"
+]
+
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for taking the time to fill out idea report!
   - type: textarea
-    id: Description
+    id: Idea Request
     attributes:
-      label: Description?
+      label: idea request
       description: 기능 확장 또는 현재 모듈의 변경, 피쳐 엔지니어링에 대한 아이디어를 적어주세요.
       placeholder: 자세한 설명을 적어주세요
-      value: "Features or Idea!"
     validations:
       required: true
