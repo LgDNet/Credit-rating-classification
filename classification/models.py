@@ -9,8 +9,8 @@ from sklearn.ensemble import (
 )
 from sklearn.svm import SVC
 from xgboost import XGBClassifier
-from catboost import CatBoostClassifier
-from lightgbm import LGBMClassifier
+# from catboost import CatBoostClassifier
+# from lightgbm import LGBMClassifier
 
 
 class Model:
@@ -50,9 +50,9 @@ class Model:
     def xgboost(self) -> XGBClassifier:
         return XGBClassifier(random_state=42)
 
-    @property
-    def catboost(self) -> CatBoostClassifier:
-        return CatBoostClassifier(random_seed=42)
+    # @property
+    # def catboost(self) -> CatBoostClassifier:
+    #     return CatBoostClassifier(random_seed=42)
 
     @property
     def mlp_classifier(self) -> MLPClassifier:
@@ -62,9 +62,9 @@ class Model:
         )
 
     # NOTE: conda install lightgbm으로 설치 하여 사용 하거나, 주석 처리하여 제외 시킬 것
-    @property
-    def lightgbm(self):
-        return LGBMClassifier(n_estimators=400)
+    # @property
+    # def lightgbm(self):
+    #     return LGBMClassifier(n_estimators=400)
 
     @staticmethod
     def get_model_list():
