@@ -88,7 +88,7 @@ class Model:
     def lightgbm(self):
         from lightgbm import LGBMClassifier
 
-        return LGBMClassifier(n_estimators=400)
+        return LGBMClassifier(n_estimators=150, random_state=42)
 
     @staticmethod
     def get_model_list():
