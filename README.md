@@ -1,9 +1,6 @@
 # Credit-rating-classification
-고객 대출등급 분류 해커톤
-# Credit-rating-classification
 
 <img width="869" alt="image" src="https://github.com/LgDNet/Credit-rating-classification/assets/118493627/09c78f28-bdeb-48c6-9a60-af8234590e84">
----
 
 ### 주제
 고객의 대출등급을 예측하는 AI 알고리즘 개발
