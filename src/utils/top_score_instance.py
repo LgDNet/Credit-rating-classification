@@ -1,5 +1,5 @@
 from typing import List, Dict, TypeVar, Union
-
+from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
 
 MODEL_INSTANCE = TypeVar('MODEL_INSTANCE')
 
@@ -33,3 +33,19 @@ def get_max_score_model_instance(model_info_list: List[Dict[str, Union[str, int,
 
     print(f"MAX SCORE model instance: {max_score_model_name} TEST SCORE: {max_score}")
     return max_score_model_instance
+
+
+def check_the_score(predict, answer):
+    """
+    스코어 확인
+    """
+    result1 = f1_score(predict, answer, average="macro")
+    result2 = precision_score(predict, answer, average="macro")
+    result3 = recall_score(predict, answer, average="macro")
+    # result4 = roc_auc_score(predict, answer, average="macro", multi_class="ovr")
+
+    score_result = {'f1': result1, 'precision': result2, 'recall': result3}
+
+    print('----[Validation Score]-----')
+    for name, score in score_result.items():
+        print(f'{name} score : {score:.4f}')
