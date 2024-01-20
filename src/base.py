@@ -7,11 +7,13 @@ from data.load import Data
 # from src.utils.top_score_instance import get_max_score_model_instance
 from src.utils.manage_pkl_files import pkl_save
 from src.utils.top_score_instance import check_the_score
+from src.utils.data_preprocessing import DataPreprocessing
 
 
 class BasePiepline(metaclass=ABCMeta):
     def __init__(self):
         self.label_encoder = LabelEncoder()
+        self._preprocessing_instance = DataPreprocessing
 
     def tear_down(self, _model):
         pkl_save(_model)
@@ -19,6 +21,14 @@ class BasePiepline(metaclass=ABCMeta):
     @property
     def data(self):
         return Data
+
+    @property
+    def preprocessing_instance(self):
+        return self._preprocessing_instance
+
+    @preprocessing_instance.setter
+    def preprocessing_instance(self, instance):
+        self._preprocessing_instance = instance
 
     @abstractmethod
     def preprocessing(self, *args):
