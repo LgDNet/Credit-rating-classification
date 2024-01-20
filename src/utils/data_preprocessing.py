@@ -7,7 +7,6 @@ class DataPreprocessing:
         self.df = df
 
     def __call__(self):
-        print("DataPreprocessing __call__ method is called.")
         self.set_up()
 
         step = [func for func in dir(self) if callable(getattr(self, func)) and func.startswith("step_")]
@@ -29,8 +28,14 @@ class DataPreprocessing:
         return seq_to_num_dict
 
     def set_up(self):
-        print("DataPreprocessing set_up method is called.")
-        self.df = self.df.drop(columns=['ID', '근로기간'])
+        self.df = self.df.drop(columns=['ID'])
+
+        label_dict = {'< 1 year': 0, '<1 year': 0, '1 year': 1, '1 years': 1, '2 years': 2, '3': 3,
+                      '3 years': 3, '4 years': 4, '5 years': 5, '6 years': 6, '7 years': 7, '8 years': 8,
+                      '9 years': 9, '10+ years': 10, '10+years': 10, 'Unknown': -1
+                      }
+
+        self.df['근로기간'] = self.df['근로기간'].map(label_dict)
 
     def tear_down(self):
         categorical_features = ['대출기간', '주택소유상태', '대출목적']
