@@ -14,6 +14,7 @@ class BasePiepline(metaclass=ABCMeta):
     def __init__(self):
         self.label_encoder = LabelEncoder()
         self._preprocessing_instance = DataPreprocessing
+        
 
     def tear_down(self, _model):
         pkl_save(_model)
@@ -30,32 +31,42 @@ class BasePiepline(metaclass=ABCMeta):
     def preprocessing_instance(self, instance):
         self._preprocessing_instance = instance
 
-    @abstractmethod
-    def preprocessing(self, *args):
-        pass
+    # @abstractmethod
+    # def preprocessing(self, *args):
+    #     pass
 
     def _common_data_process(self):
-        self._train = self.preprocessing(self.data.train)
+        self.preprocessing.set_up_dataframe(self.data.train, mode=True) # 전처리 모드 셋업
+        self._train = self.preprocessing.run() # 전처리 실행
+        # self._train = self.preprocessing(self.data.train,mode=True)
 
         X = self._train.drop(['대출등급'], axis=1)
         Y = self._train['대출등급']
 
         Y = self.label_encoder.fit_transform(Y)
-
+        self.X, self.Y = X, Y
         return X, Y
 
-    def train_score(self, _model):
+    def valid(self, _model):
+        """ model 검증 """
         X, Y = self._common_data_process()
-
+        
         x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.1, random_state=42, stratify=Y)
+        # k-fold code로 변환해야함
         _model.fit(x_train, y_train)
         predict = _model.predict(x_test)
         check_the_score(predict, y_test)
+        # 나중엔 valid도 모델 리턴이 혹시 필요 할 수 있나 해서
+        # return {
+        #     "model_name": model_name,
+        #     "model_instance": _model,
+        #         }
 
     def train(self, _model):
+        """ model 훈련 """
         X, Y = self._common_data_process()
 
-        _model.fit(X, Y)
+        _model.fit(X, Y) #전체 학습
         model_name = str(_model).split("(")[0]
 
         return {
@@ -67,11 +78,12 @@ class BasePiepline(metaclass=ABCMeta):
         """ model 추론 """
 
         # test 전처리
-        self._test = self.preprocessing(self.data.test)
+        self.preprocessing.set_up_dataframe(self.data.test, mode=False) # 전처리 모드 셋업
+        self._test = self.preprocessing.run() # 전처리 실행
+        # self._test = self.preprocessing(self.data.test,mode=False)
 
         # model 예측
         real = _model.predict(self._test)
-
         return self.label_encoder.inverse_transform(real)
 
     def submit_process(self, result):
