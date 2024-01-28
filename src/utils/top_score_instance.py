@@ -44,8 +44,6 @@ def check_the_score(predict, answer):
     result3 = recall_score(predict, answer, average="macro")
     # result4 = roc_auc_score(predict, answer, average="macro", multi_class="ovr")
 
-    score_result = {'f1': result1, 'precision': result2, 'recall': result3}
+    return {'f1': result1, 'precision': result2, 'recall': result3}
 
-    print('----[Validation Score]-----')
-    for name, score in score_result.items():
-        print(f'{name} score : {score:.4f}')
+

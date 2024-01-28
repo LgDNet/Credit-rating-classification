@@ -2,12 +2,15 @@ from abc import ABCMeta, abstractmethod
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-
+from sklearn.model_selection import StratifiedKFold
+from tqdm import tqdm
+import numpy as np
 from data.load import Data
 # from src.utils.top_score_instance import get_max_score_model_instance
 from src.utils.manage_pkl_files import pkl_save
 from src.utils.top_score_instance import check_the_score
 from src.utils.data_preprocessing import DataPreprocessing
+
 
 
 class BasePiepline(metaclass=ABCMeta):
@@ -46,16 +49,44 @@ class BasePiepline(metaclass=ABCMeta):
         Y = self.label_encoder.fit_transform(Y)
         self.X, self.Y = X, Y
         return X, Y
-
+        
     def valid(self, _model):
         """ model 검증 """
-        X, Y = self._common_data_process()
         
-        x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.1, random_state=42, stratify=Y)
-        # k-fold code로 변환해야함
-        _model.fit(x_train, y_train)
-        predict = _model.predict(x_test)
-        check_the_score(predict, y_test)
+        X, Y = self._common_data_process()
+        result = {"f1":[], "precision":[], "recall":[]}
+        stratkfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        # k-fold
+        for train_idx, test_idx in tqdm(stratkfold.split(X,Y)):
+            x_train, x_test = X.iloc[train_idx], X.iloc[test_idx]
+            y_train, y_test = Y[train_idx], Y[test_idx]
+        
+            # 모델 훈련
+            _model.fit(x_train, y_train)
+            
+            predict = _model.predict(x_test)
+            score_result = check_the_score(predict, y_test)
+            for name, score in score_result.items():
+                result[name].append(score)        
+        # output
+        print('----[K-Fold Validation Score]-----')
+        for name, score_list in result.items():
+            print(f'{name} score : {np.mean(score_list):.4f} / STD: (+/- {np.std(score_list):.4f})')
+        
+        
+    # def valid(self, _model):
+    #     """ model 검증 """
+    #     X, Y = self._common_data_process()
+    #     x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.1, random_state=42, stratify=Y)
+    #     # k-fold code로 변환해야함
+    #     _model.fit(x_train, y_train)
+    #     predict = _model.predict(x_test)
+        
+    #     score_result = check_the_score(predict, y_test)
+        
+    #     print('----[Validation Score]-----')
+    #     for name, score in score_result.items():
+    #         print(f'{name} score : {score:.4f}')
         # 나중엔 valid도 모델 리턴이 혹시 필요 할 수 있나 해서
         # return {
         #     "model_name": model_name,
