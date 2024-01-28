@@ -1,0 +1,11 @@
+{
+    "n_estimators": {"params": [1500, 2500], "dtype": "int"},
+    "max_depth": {"params": [3, 8], "dtype": "int"},
+    "min_child_weight": {"params": [2, 4], "dtype": "int"},
+    "learning_rate": {"params": [1e-4, 0.2], "dtype": "float"},
+    "subsample": {"params": [0.2, 1], "dtype": "float"},
+    "gamma": {"params": [1e-4, 1.0], "dtype": "float"},
+    "colsample_bytree": {"params": [0.2, 1], "dtype": "float"},
+    "colsample_bylevel": {"params": [0.2, 1], "dtype": "float"},
+    "colsample_bynode": {"params": [0.2, 1], "dtype": "float"}
+}
