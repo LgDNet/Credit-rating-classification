@@ -16,9 +16,9 @@ class classproperty:  # noqa
 
 @dataclass
 class Data:
-    _train: str = Path(BASE, "train.csv")  # TODO: 파일명 변경
-    _test: str = Path(BASE, "test.csv")  # TODO: 파일명 변경
-    _submission: str = Path(BASE, "sample_submission.csv")  # TODO: 파일명 변경
+    _train: str = Path(BASE, "train.csv")
+    _test: str = Path(BASE, "test.csv")
+    _submission: str = Path(BASE, "sample_submission.csv")
 
     @classproperty
     def train(self):
