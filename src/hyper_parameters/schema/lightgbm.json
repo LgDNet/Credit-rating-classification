@@ -1,0 +1,13 @@
+{
+    "objective": {"params": "multiclass", "dtype": "str"},
+    "num_class": {"params": "", "dtype": "var"},
+    "n_estimators": {"params": [500, 2000], "dtype" : "int"},
+    "learning_rate": {"params": [1e-4, 0.1], "dtype" : "float"},
+    "max_depth": {"params": [5, 50], "dtype": "int"},
+    "min_child_weight": {"params": [0.5, 4], "dtype": "float"},
+    "min_child_samples": {"params": [1, 250], "dtype": "int"},
+    "subsample": {"params": [0.2, 1], "dtype": "float"},
+    "subsample_freq": {"params": [0, 5], "dtype": "int"},
+    "colsample_bytree": {"params": [0.2, 1], "dtype": "float"},
+    "num_leaves": {"params": [8, 64], "dtype": "int"}
+}
